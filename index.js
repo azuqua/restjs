@@ -4,7 +4,11 @@
  * Rest module 
  */
  
-var https = require('https');
+function Rest(options) {
+  this.protocol = options.protocol || 'https';
+  this._requestModule = require(this.protocol);
+}
+
 
 /**
  * Generic REST invocation function
@@ -13,7 +17,7 @@ var https = require('https');
  * @param  	{string}	  body		  body of request
  * @param  	{Function}	callback	function(data) error handling & parseing should be done by module
  */
-function rest(opts, body, callback) {
+Rest.prototype.request = function(opts, body, callback) {
   var callbackArgs = [],
       isDone = false;
 
@@ -29,23 +33,20 @@ function rest(opts, body, callback) {
     }
   }
 
-  var req = https.request(opts, function(res) {
+  var req = this._requestModule.request(opts, function(res) {
     var data = '';
 
     res.on('data', function(d){data+=d;}); //capture data
-    res.on('end', function(){
+    res.on('end', function() {
       res.body = res.message = data;
       finish(null, res);
     });
   });
 
-  req.on('error', function(e) {
-    console.log('[rest] error' + e);
-    finish(e);
-  });
+  req.on('error', finish);
 
   req.write(body);
   req.end();
 }
 
-module.exports = rest;
+module.exports = Rest;
