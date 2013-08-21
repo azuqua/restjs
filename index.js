@@ -5,6 +5,7 @@
  */
  
 function Rest(options) {
+  this.encoding = options.encoding || 'utf8';
   this.protocol = options.protocol || 'https';
   this._requestModule = require(this.protocol);
 }
@@ -18,7 +19,8 @@ function Rest(options) {
  * @param  	{Function}	callback	function(data) error handling & parseing should be done by module
  */
 Rest.prototype.request = function(opts, body, callback) {
-  var callbackArgs = [],
+  var self = this,
+      callbackArgs = [],
       isDone = false;
 
   function finish(err, res) {
@@ -36,6 +38,8 @@ Rest.prototype.request = function(opts, body, callback) {
   var req = this._requestModule.request(opts, function(res) {
     var data = '';
 
+    res.setEncoding(self.encoding);
+
     res.on('data', function(d){data+=d;}); //capture data
     res.on('end', function() {
       res.body = res.message = data;
@@ -43,6 +47,7 @@ Rest.prototype.request = function(opts, body, callback) {
     });
   });
 
+  req.setEncoding(this.encoding);
   req.on('error', finish);
 
   req.write(body);
