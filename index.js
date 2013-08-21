@@ -23,6 +23,8 @@ Rest.prototype.request = function(opts, body, callback) {
       callbackArgs = [],
       isDone = false;
 
+  body = body || '';
+
   function finish(err, res) {
     if (isDone) return; //This would only happen if an error occurs AFTER the res has ended...doubtful that would ever happen.
 
@@ -47,7 +49,6 @@ Rest.prototype.request = function(opts, body, callback) {
     });
   });
 
-  req.setEncoding(this.encoding);
   req.on('error', finish);
 
   req.write(body);
