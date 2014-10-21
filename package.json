@@ -7,7 +7,7 @@
   "private": true,
   "main": "index",
   "dependencies": {
-    "async": "0.2.10",
+    "async": "0.2.7",
     "xml2js": "*",
     "xmlbuilder": "2.2.1"
   },
@@ -20,6 +20,6 @@
     "http"
   ],
   "engines": {
-    "node": "0.10.x"
+    "node": "0.8.x"
   }
 }
