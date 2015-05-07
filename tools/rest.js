@@ -18,7 +18,7 @@ function RestWrap(opts) {
     if (options.middleware) this.middleware = this.middleware.concat(options.middleware); //In case we want default middleware, concat instead of replacing this.middleware
   }
 
-  Rest.middleware = require('./middleware');
+  Rest.middleware = require('../middleware');
 
   /**
   * Generic REST invocation function
