@@ -8,8 +8,7 @@
   "main": "index",
   "dependencies": {
     "async": "0.2.10",
-    "xml2js": "*",
-    "xmlbuilder": "2.2.1"
+    "xml2js": "*"
   },
   "repository": {
     "type": "git",
