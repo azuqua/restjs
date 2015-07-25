@@ -74,6 +74,7 @@ function RestWrap(opts) {
       res.setEncoding(self.encoding);
 
       res.on('data', function(d){data+=d;}); //capture data
+      res.on('error', finish);
       res.on('end', function() {
         res.body = res.message = data;
         finish(null, res);
