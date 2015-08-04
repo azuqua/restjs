@@ -47,21 +47,21 @@ function RestWrap(opts) {
       } else {
         isDone = true;
         callbackArgs[1] = res;
+      }
 
-        if (!callbackArgs[0] && middleware.length) { //If there isn't already an error and there is middleware, run them
-          async.eachSeries(
-            middleware,
-            function(middlewareItem, fn) {
-              middlewareItem(res, fn);
-            },
-            function(err) {
-              if (err) callbackArgs[0] = err;
-              callback.apply(null, callbackArgs); //Pass both the err and res to the callback, because often times the body will be just fine despite errors
-            }
-          );
-        } else {
-          callback.apply(null, callbackArgs); //Pass both the err and res to the callback, because often times the body will be just fine despite errors
-        }
+      if (!callbackArgs[0] && middleware.length) { //If there isn't already an error and there is middleware, run them
+        async.eachSeries(
+          middleware,
+          function(middlewareItem, fn) {
+            middlewareItem(res, fn);
+          },
+          function(err) {
+            if (err) callbackArgs[0] = err;
+            callback.apply(null, callbackArgs); //Pass both the err and res to the callback, because often times the body will be just fine despite errors
+          }
+        );
+      } else {
+        callback.apply(null, callbackArgs); //Pass both the err and res to the callback, because often times the body will be just fine despite errors
       }
     }
     
@@ -82,8 +82,9 @@ function RestWrap(opts) {
     });
 
     req.on('error', finish);
-
-    req.write(body);
+    if (opts.method.toLowerCase() !== 'get') {
+      req.write(body);
+    }
     req.end();
   };
 
