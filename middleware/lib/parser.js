@@ -14,6 +14,10 @@ function parseJSON(str, callback) {
   callback(null, parsed);
 }
 
+var unsupportedCodes = {
+  204: true
+}
+
 var supportedParsers = {
   'application/json': parseJSON,
   'text/json': parseJSON,
@@ -24,6 +28,9 @@ var supportedParsers = {
 };
 
 module.exports = function parser(res, next) {
+  //Check headers before performing parse
+  if(unsuporedCodes[res.statusCode]) return next();
+
   var matchedContentType = (res.headers['content-type'] || '').match(findType),
       parserLib;
 
