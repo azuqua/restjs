@@ -29,7 +29,7 @@ var supportedParsers = {
 
 module.exports = function parser(res, next) {
   //Check headers before performing parse
-  if(unsuporedCodes[res.statusCode]) return next();
+  if(unsupportedCodes[res.statusCode]) return next();
 
   var matchedContentType = (res.headers['content-type'] || '').match(findType),
       parserLib;
