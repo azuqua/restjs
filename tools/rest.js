@@ -85,7 +85,7 @@ function RestWrap(opts) {
         // don't do anything if body isn't an object to be parsed
       }
     }
-    
+
     req = this._requestModule.request(opts, function(res) {
       var data = '';
 
