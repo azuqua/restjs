@@ -1,6 +1,7 @@
 "use strict";
 
-var async = require('async');
+var async = require('async'),
+    qs = require('qs');
 function RestWrap(opts) {
 
   /**
@@ -68,6 +69,23 @@ function RestWrap(opts) {
     if (typeof body !== 'string') body = JSON.stringify(body);
 
     //TODO: add headers like encoding
+
+    // default for method is GET
+    opts.method = opts.method || "GET";
+    // if GET and there's a body, then turn it to a query
+    // string and append it to opts.path
+    if (opts.method && opts.method.toLowerCase() === 'get' && opts.path && body) {
+      try {
+        var temp = JSON.parse(body),
+            queryString = qs.stringify(temp),
+            delimiter = opts.path.indexOf("?") > -1 ? "&" : "?";
+        opts.path += delimiter + queryString;
+      }
+      catch(e) {
+        // don't do anything if body isn't an object to be parsed
+      }
+    }
+    
     req = this._requestModule.request(opts, function(res) {
       var data = '';
 
@@ -82,7 +100,7 @@ function RestWrap(opts) {
     });
 
     req.on('error', finish);
-    if (opts.method.toLowerCase() !== 'get') {
+    if (opts.method && opts.method.toLowerCase() !== 'get') {
       req.write(body);
     }
     req.end();
