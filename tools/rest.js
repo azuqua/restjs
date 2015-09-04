@@ -85,6 +85,11 @@ function RestWrap(opts) {
         // don't do anything if body isn't an object to be parsed
       }
     }
+    
+    if(opts.headers && opts.method && opts.method.toLowerCase() === "get"){
+        delete opts.headers["Content-Type"];
+        delete opts.headers["Content-Length"];
+    }
 
     req = this._requestModule.request(opts, function(res) {
       var data = '';
