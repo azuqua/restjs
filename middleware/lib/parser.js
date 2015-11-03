@@ -5,6 +5,9 @@ var xml2js = require('xml2js'),
 
 //Make JSON.parse async
 function parseJSON(str, callback) {
+  if(str === "") {
+    return callback({});
+  }
   try {
     var parsed = JSON.parse(str);
   } catch (e) {
@@ -12,6 +15,10 @@ function parseJSON(str, callback) {
   }
 
   callback(null, parsed);
+}
+
+var unsupportedCodes = {
+  204: true
 }
 
 var supportedParsers = {
@@ -24,6 +31,9 @@ var supportedParsers = {
 };
 
 module.exports = function parser(res, next) {
+  //Check headers before performing parse
+  if(unsupportedCodes[res.statusCode]) return next();
+
   var matchedContentType = (res.headers['content-type'] || '').match(findType),
       parserLib;
 
