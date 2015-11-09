@@ -5,6 +5,9 @@ var xml2js = require('xml2js'),
 
 //Make JSON.parse async
 function parseJSON(str, callback) {
+  if(str === "") {
+    return callback({});
+  }
   try {
     var parsed = JSON.parse(str);
   } catch (e) {
