@@ -4,13 +4,14 @@ var xml2js = require('xml2js'),
     findType = /(.+\/[^;]+)/;
 
 //Make JSON.parse async
-function parseJSON(str, callback) {
-  if(str === "") {
-    return callback({});
-  }
+function parseJSON(_str, callback) {
   try {
-    var parsed = JSON.parse(str);
+    var parsed = JSON.parse(_str);
   } catch (e) {
+    var str = _str.trim();
+    if(str === "") {
+      return callback({});
+    }
     return callback(e);
   }
 
