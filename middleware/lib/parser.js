@@ -5,22 +5,23 @@ var xml2js = require('xml2js'),
 
 //Make JSON.parse async
 function parseJSON(_str, callback) {
+  var parsed, err;
   try {
-    var parsed = JSON.parse(_str);
+    parsed = JSON.parse(_str);
   } catch (e) {
     var str = _str.trim();
     if(str === "") {
-      return callback({});
+      parsed = {};
+    } else {
+      err = e;
     }
-    return callback(e);
   }
-
-  callback(null, parsed);
+  callback(err, parsed);
 }
 
 var unsupportedCodes = {
   204: true
-}
+};
 
 var supportedParsers = {
   'application/json': parseJSON,
