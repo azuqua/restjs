@@ -1,7 +1,7 @@
 {
   "name": "restjs",
   "company": "Azuqua, inc.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight REST client",
   "author": "Kevin McTigue",
   "private": true,
